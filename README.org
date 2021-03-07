@@ -5,7 +5,7 @@ ImGui::MultiPlotLines() is a nearly drop-in alternative to
 ImGui::PlotLines() that allows drawing multiple channels
 simultaneously and adds some nice extra features on top.
 
-#+html: <p align="center"><img src="mpl_default_with_legend.png" width="500" alt="Plot + Legend"/></p>
+#+html: <p align="center"><img src="images/mpl_default_with_legend.png" width="500" alt="Plot + Legend"/></p>
 
 * Features
 
@@ -40,8 +40,6 @@ member initializations that could be avoided at the cost of much
 uglier code.
 
 * Guide
-
-See ImGui::MultiPlotLines_Demo() for example code showing how to use most available features.
 
 Basic usage is similar to ImGui::PlotLines(), and only requires the following changes:
 - Providing a get_value() function pointer that accepts and additional channel_idx parameter
@@ -79,6 +77,8 @@ read-write parameters (prefixed by RW_):
 - Highlight Plot channels when hovering over Legend entries (with
   non-persistent params, hovered Plot channels will be highlghted in
   Legend, but not the other way around)
+
+See ImGui::MultiPlotLines_Demo() for example code showing how to use most available features.
 
 * Details
 ** Channel colours
