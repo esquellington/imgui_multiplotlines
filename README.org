@@ -1,8 +1,8 @@
 #+STARTUP: indent
 * imgui_multiplotlines
 
-ImGui::MultiPlotLines() is a nearly drop-in alternative to
-ImGui::PlotLines() that allows drawing multiple channels
+ImGui::MultiPlotLines() is a nearly drop-in alternative to vanilla
+ImGui::PlotLines() in [[Dear ImGui]] that allows drawing multiple channels
 simultaneously and adds some nice extra features on top.
 
 #+html: <p align="center"><img src="images/mpl_default_with_legend.png" width="500" title"Plot + Legend"/></p>
@@ -116,6 +116,24 @@ I've tried to keep the API and default behaviour as simple as possible.
   hierarchy instead of a flat column-based layout
 - Generic MouseClickAction that opens a context menu with all available actions
 - User-defined MouseClickAction that calls a user-provided function pointer
+
+* Motivation
+
+In realtime apps there's many use cases for drawing multiple plots
+simultaneously, and the default functionality in [[https://github.com/ocornut/imgui/][Dear ImGui]] is quite
+limited. There's a some pretty advanced alternatives [[See also]], but I
+felt that a simple alternative to ImGui::PlotLines() was still
+missing.
+
+The main reason I ended up writing this was plain and simple
+procrastination. I spent roughly 1 week trying to convince myself not
+to do it while constantly wanting to, and then roughly another week
+actually doing it.
+
+There's no real plan for new features, the [[Potential improvements]] may
+never happen as the core idea is to keep it simple, but I foresee some
+bug-fixing and minor changes in the near future.
+
 * See also
 - [[https://github.com/ocornut/imgui/][Dear ImGui]]
 - [[https://github.com/epezent/implot][ImPlot]] An advanced 2D Plotting for Dear ImGui
