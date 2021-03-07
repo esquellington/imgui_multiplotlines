@@ -12,12 +12,12 @@ simultaneously and adds some nice extra features on top.
 Draw N channels simultaneously in separate Plot and Legend views.
 
 Channels:
-- Can have a user-defined name and colour
+- Can have a user-defined name and color
 - Can be shown/hidden interactively
 - Can be highlighted and selected
 
 Plot View:
-- Draws N channel curves simultaneously in their respective colours
+- Draws N channel curves simultaneously in their respective colors
 - Channel curves can be hovered and clicked for custom interaction
 - Can filter curves to smoothen noisy input data
 
@@ -95,9 +95,9 @@ example code showing how to use most available features, and
 ImGui::MultiPlotLines_Params struct comments.
 
 * Details
-** Channel colours
+** Channel colors
 The default palette is nice enough for dark backgrounds and contains
-16 different colours that are reused if there's more than 16
+16 different colors that are reused if there's more than 16
 channels. Users can provide a get_channel_color() function to
 customize these at will.
 ** MouseClickActions
