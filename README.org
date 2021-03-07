@@ -66,12 +66,9 @@ Params struct can be non-persistent or persistent across plot calls.
 Non-persistent params are reset before each MultiPlotLines() call, and
 allow fine-tuning the Plot/Legend appearance and enable some minimal
 interaction:
-- Show Legend
-- Enable/Disable per-channel visibility
-- Enable Legend and other UI elements
-- Filter channel data
-- Change plot line thickness
-- Change mouse click actions on Plot and Legend
+- Enable Legend
+- Customize per-channel name, color and visibility
+- Change plot line thickness and data filtering factor
 - Query RW_HoveredChannelIdx,RW_SelectedChannelIdx right after
   MultiPlotLines() returns. they will be reset on next call
 
@@ -84,9 +81,9 @@ The minimal setup to enable the Legend feature would be:
 
 Persistent params allow keeping track of interactive modification of
 read-write values, prefixed by RW_, across multiple calls:
-- Toggle channel visibility
-- Toggle channel selection
 - Hide/Show Legend interactively
+- Toggle channel visibility interactively
+- Toggle channel selection interactively
 - Keep selection active until explicitly modified
 - Highlight Plot channels when hovering over Legend entries
 
