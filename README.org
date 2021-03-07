@@ -1,29 +1,38 @@
 #+STARTUP: indent
-* Intro
-[[ImGui::MultiPlotLines]] aims to be a simple drop-in replacement of
-[[ImGui::PlotLines()]] to draw multiple channels simultaneously, and adds
-some nice optional features on top.
+* imgui_multiplotlines
+ImGui::MultiPlotLines() is a nearly drop-in alternative to
+ImGui::PlotLines() that allows drawing multiple channels
+simultaneously and adds some nice extra features on top.
 ** TODO Screenshot/GIF
 * Features
-- Plot view shows N channels simultaneously that can be hovered and selected
-- Legend view shows channel names, colors and status (hovered,selected)
-- Channels can have a user-defined name, colour and parent channel
-- Channels can be shown/hidden
-- Channels can be highlighted when hovered in both Plot and Legend
+Draw N channels simultaneously in separate Plot and Legend views.
+
+Channels:
+- Have a user-defined name and colour
+- Can be shown/hidden interactively
+- Can be highlighted and selected
+- Can be filtered to smoothen noisy data
+
+Plot View:
+- Shows N channels simultaneously in their respective colours
+- Channel curves can be that can be hovered and clicked for custom interaction
+
+Legend View:
+- Shows channel names and their status (visible,hovered,selected...)
+- Channel names can be that can be hovered and clicked for custom interaction
 ** TODO GIF
-* Using
-See [[ImGui::MultiPlotLines_Demo()]] for example code showing how to use
+* Guide
+See ImGui::MultiPlotLines_Demo() for example code showing how to use
 most available features.
 
-Basic usage is similar to [[ImGui::PlotLines()]], and only requires the
+Basic usage is similar to ImGui::PlotLines(), and only requires the
 following changes:
 - Providing a get_value() function pointer that accepts and additional
   channel_idx parameter
 - Providing the number of channels
 
-Advanced usage requires passing an non-null
-[[ImGui::MultiPlotLines_Params]] struct pointer, that can be persistent
-or non-persistent.
+Advanced usage requires passing an non-null ImGui::MultiPlotLines_Params
+struct pointer, that can be persistent or non-persistent.
 
 Non-persistent params allow fine-tuning the Plot/Legend appearance and
 enable some minimal interaction:
@@ -38,16 +47,20 @@ read-write parameters (prefixed by RW_):
 - Toggle channel visibility
 - Toggle channel selection
 - Hide/Show Legend interactively
-- Highlight Plot channels when hovering over Legend entries (hovered
-  Plot channels will be highlghted in Legend, but not the other way around)
-* Installation
-Copy imgui_multiplot.h/cpp to your project folders or your ImGui installation
-* Limitations
-User-defined get_value() functions can easily work around these, but
-I've tried to keep the API and default behaviour as simple as possible:
+- Highlight Plot channels when hovering over Legend entries (with
+  non-persistent params, hovered Plot channels will be highlghted in
+  Legend, but not the other way around)
+
+** Limitations:
 - All plots use the same vertical range
 - All channels are assumed to have the same number of samples (horizontal range)
-- No support for values_offset or overlay_text, available in [[ImGui::PlotLines()]]
+- No support for values_offset or overlay_text, available in ImGui::PlotLines()
+
+User-defined get_value() functions can easily work around these, but
+I've tried to keep the API and default behaviour as simple as possible.
+
+* Installation
+Copy imgui_multiplotlines.h/cpp to your project folders or your ImGui installation.
 * Potential improvements
 ** TODO Legend placement options
 - Legend could be optionally placed beside/above Plot, instead of below
@@ -67,4 +80,3 @@ I've tried to keep the API and default behaviour as simple as possible:
 * See also
 - Fully featured plotting library: https://github.com/epezent/implot
 - An improved plot widget aimed at displaying audio data: https://github.com/soulthreads/imgui-plot
-* TODO LICENSE
