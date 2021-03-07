@@ -43,7 +43,7 @@ uglier code.
 * Guide
 
 Basic usage is similar to ~ImGui::PlotLines()~ and only requires the following changes:
-- Providing a get_value() function pointer that accepts and additional channel_idx parameter
+- Providing a ~get_value()~ function pointer that accepts and additional channel_idx parameter
 - Providing the number of channels
 
 #+BEGIN_SRC cpp
@@ -96,7 +96,7 @@ for example code showing how to use most available features, and
 ** Channel colors
 The default palette is nice enough for dark backgrounds and contains
 16 different colors that are reused if there's more than 16
-channels. Users can provide a get_channel_color() function to
+channels. Users can provide a ~get_channel_color()~ function to
 customize these at will.
 ** MouseClickActions
 Default mouse button actions are setup to select (left) and hide/show
@@ -107,7 +107,7 @@ MultiPlotLines_Params struct.
 - All plots use the same vertical range
 - All channels are assumed to have the same number of samples (horizontal range)
 - No support for values_offset or overlay_text present in ~ImGui::PlotLines()~
-User-defined get_value() functions can easily work around these, but
+User-defined ~get_value()~ functions can easily work around these, but
 I've tried to keep the API and default behaviour as simple as possible.
 ** Potential improvements
 - Legend could be optionally placed beside/above Plot, instead of below
