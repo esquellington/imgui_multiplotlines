@@ -17,7 +17,7 @@ Channels:
 - Can be highlighted and selected
 
 Plot View:
-- Draws N channel curves simultaneously in their respective colors
+- Draws channel curves simultaneously using their respective colors
 - Channel curves can be hovered and clicked for custom interaction
 - Can filter curves to smoothen noisy input data
 
@@ -31,8 +31,9 @@ Legend View:
 * Installation
 
 Install /boost/ and... :scream: ... no, really, just copy
-imgui_multiplotlines.h/cpp to your project folders or your ImGui
-installation and you're good to go :rocket:
+[[file:imgui_multiplotlines.h]] and [[file:imgui_multiplotlines.cpp]] to your
+project folders or your ImGui installation and you're good to
+go :rocket:
 
 NOTE: Compilation requires C++11 due to some lightweight use of
 non-capturing lambdas and a few harmless autos and inline struct
@@ -60,17 +61,17 @@ Basic usage is similar to ~ImGui::PlotLines()~ and only requires the following c
 
 Enabling additional features requires passing an non-null
 ~ImGui::MultiPlotLines_Params~ struct pointer, please read the struct
-comments in imgui_multiplotlines.h for specific details. The user-owned
+comments in [[file:imgui_multiplotlines.h]] for specific details. The user-owned
 Params struct can be non-persistent or persistent across plot calls.
 
-Non-persistent params are reset before each MultiPlotLines() call, and
-allow fine-tuning the Plot/Legend appearance and enable some minimal
-interaction:
+Non-persistent params are reset before each ~ImGui::MultiPlotLines()~
+call, and allow fine-tuning the Plot/Legend appearance and enable some
+minimal interaction:
 - Enable Legend
 - Customize per-channel name, color and visibility
 - Change plot line thickness and data filtering factor
-- Query RW_HoveredChannelIdx,RW_SelectedChannelIdx right after
-  MultiPlotLines() returns. they will be reset on next call
+- Query ~RW_HoveredChannelIdx~,~RW_SelectedChannelIdx~ right after
+  call return.
 
 The minimal setup to enable the Legend feature would be:
 #+BEGIN_SRC cpp
@@ -87,9 +88,9 @@ read-write values, prefixed by RW_, across multiple calls:
 - Keep selection active until explicitly modified
 - Highlight Plot channels when hovering over Legend entries
 
-See ~ImGui::MultiPlotLines_Demo()~ in imgui_multiplotlines_demo.h for
-example code showing how to use most available features, and
-~ImGui::MultiPlotLines_Params~ struct comments.
+See ~ImGui::MultiPlotLines_Demo()~ in [[file:imgui_multiplotlines_demo.h]]
+for example code showing how to use most available features, and
+~ImGui::MultiPlotLines_Params~ struct comments in [[file:imgui_multiplotlines.h]].
 
 * Details
 ** Channel colors
