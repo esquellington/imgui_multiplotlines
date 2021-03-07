@@ -1,0 +1,70 @@
+#+STARTUP: indent
+* Intro
+[[ImGui::MultiPlotLines]] aims to be a simple drop-in replacement of
+[[ImGui::PlotLines()]] to draw multiple channels simultaneously, and adds
+some nice optional features on top.
+** TODO Screenshot/GIF
+* Features
+- Plot view shows N channels simultaneously that can be hovered and selected
+- Legend view shows channel names, colors and status (hovered,selected)
+- Channels can have a user-defined name, colour and parent channel
+- Channels can be shown/hidden
+- Channels can be highlighted when hovered in both Plot and Legend
+** TODO GIF
+* Using
+See [[ImGui::MultiPlotLines_Demo()]] for example code showing how to use
+most available features.
+
+Basic usage is similar to [[ImGui::PlotLines()]], and only requires the
+following changes:
+- Providing a get_value() function pointer that accepts and additional
+  channel_idx parameter
+- Providing the number of channels
+
+Advanced usage requires passing an non-null
+[[ImGui::MultiPlotLines_Params]] struct pointer, that can be persistent
+or non-persistent.
+
+Non-persistent params allow fine-tuning the Plot/Legend appearance and
+enable some minimal interaction:
+- Enable/Disable per-channel visibility
+- Enable Legend and other UI elements
+- Filter channel data
+- RW_HoveredChannelIdx and RW_SelectedChannelIdx can be queried after
+  drawing, but will be reset on next call
+
+Persistent params allow tracking and interactive modification of
+read-write parameters (prefixed by RW_):
+- Toggle channel visibility
+- Toggle channel selection
+- Hide/Show Legend interactively
+- Highlight Plot channels when hovering over Legend entries (hovered
+  Plot channels will be highlghted in Legend, but not the other way around)
+* Installation
+Copy imgui_multiplot.h/cpp to your project folders or your ImGui installation
+* Limitations
+User-defined get_value() functions can easily work around these, but
+I've tried to keep the API and default behaviour as simple as possible:
+- All plots use the same vertical range
+- All channels are assumed to have the same number of samples (horizontal range)
+- No support for values_offset or overlay_text, available in [[ImGui::PlotLines()]]
+* Potential improvements
+** TODO Legend placement options
+- Legend could be optionally placed beside/above Plot, instead of below
+** TODO Plot axis labels and scale
+- Draw text labels on both axis
+- Draw range/ticks on both axis
+** TODO Plot navigation: zoom, pan, selection
+** TODO Channel hierarchy view
+- Alternative Legend view that shows channels as a collapsable
+  hierarchy instead of a column-based layout
+** TODO Generic MouseClickAction
+- One possible MCA would be to open a popup/context menu with all
+  potential actions on a channel, so that we don't need to decide
+  beforehand how do we bind 2 mouse buttons to several possible
+  actions
+- Other actions could be added, maybe passing a user-defined function pointer
+* See also
+- Fully featured plotting library: https://github.com/epezent/implot
+- An improved plot widget aimed at displaying audio data: https://github.com/soulthreads/imgui-plot
+* TODO LICENSE
