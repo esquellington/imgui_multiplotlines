@@ -459,16 +459,16 @@ void MultiPlotLines_Demo()
     // MultiPlotLines function parameters
     static int num_channels(2), num_values(100);
     static bool bUseDefaultParams(false);
-    if( ImGui::CollapsingHeader("MPL Function Params") )
+    if( ImGui::CollapsingHeader("MPL function params") )
     {
         ImGui::SliderInt("NumChannels",&num_channels,1,ImGui::MultiPlotLines_Params::cMaxChannels);
         ImGui::SliderInt("NumValues",&num_values,2,1000);
     }
 
     // MultiPlotLines_Params struct
-    if( ImGui::CollapsingHeader("MPL Struct Params") )
+    if( ImGui::CollapsingHeader("MPL struct params") )
     {
-        ImGui::Checkbox( "UseDefault", &bUseDefaultParams );
+        // ImGui::Checkbox( "UseDefault", &bUseDefaultParams );
         if( !bUseDefaultParams )
         {
             ImGui::Checkbox( "bFilterUI", &params.bFilterUI );
@@ -487,9 +487,7 @@ void MultiPlotLines_Demo()
     ImGui::MultiPlotLines( "MPL Demo", //must have a non-null name
                            []( void* data, int slice_idx, int channel_idx )
                                {
-                                   return sinf( 2.0f*3.159265f
-                                                * float(channel_idx+1)
-                                                * float(slice_idx)/100.0f);
+                                   return sinf( 0.5f * 3.159265f * float(channel_idx+1) * float(slice_idx)/100.0f);
                                },
                            nullptr, //data
                            num_values, //values
@@ -498,8 +496,8 @@ void MultiPlotLines_Demo()
                            FLT_MAX, FLT_MAX, //ranges
                            ImVec2( width, height ) ); //sizes
 
-    // Query RW_ params, available IFF params != nullptr
-    if( ImGui::CollapsingHeader("MPL Results access") )
+    // Query RW_ params, only valid if params != nullptr
+    if( ImGui::CollapsingHeader("MPL query RW_ params") )
     {
         ImGui::Text("HoveredIdx = %d, SelectedIdx = %d", params.RW_HoveredChannelIdx, params.RW_SelectedChannelIdx );
     }

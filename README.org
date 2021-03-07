@@ -1,11 +1,17 @@
 #+STARTUP: indent
 * imgui_multiplotlines
+
 ImGui::MultiPlotLines() is a nearly drop-in alternative to
 ImGui::PlotLines() that allows drawing multiple channels
 simultaneously and adds some nice extra features on top.
-** TODO Screenshot/GIF
+
+[[file:mpl_default_with_legend.png][Plot+Legend]]
+
 * Features
+
 Draw N channels simultaneously in separate Plot and Legend views.
+
+[[file:mpl_demo.gif][Demo]]
 
 Channels:
 - Have a user-defined name and colour
@@ -21,8 +27,9 @@ Legend View:
 - Shows channel names and status (visible,hovered,selected...)
 - Channel names can be hovered and clicked for custom interaction
 - Can be shown/hidden interactively
-* TODO GIF
+
 * Guide
+
 See ImGui::MultiPlotLines_Demo() for example code showing how to use most available features.
 
 Basic usage is similar to ImGui::PlotLines(), and only requires the following changes:
@@ -63,12 +70,14 @@ get_channel_color() function to customize these at will
 *** MouseClickActions
 
 * Installation
-Install boost... :scared: no, really, just copy imgui_multiplotlines.h/cpp to
+
+Install /boost/ :scream: ... no, really, just copy imgui_multiplotlines.h/cpp to
 your project folders or your ImGui installation and you're good to go :rocket:
 
-NOTE: Requires C++11 due to some lightweight of non-capturing lambdas
-and inline struct initialization, could be implemented without but
-code would be a lot uglier.
+NOTE: Compilation requires C++11 due to some lightweight of
+non-capturing lambdas and inline struct initialization, could be
+implemented without but code would be a lot uglier.
+
 * Potential improvements
 - Legend could be optionally placed beside/above Plot, instead of below
 - Plot axis labels and ticks markcs
@@ -79,5 +88,5 @@ code would be a lot uglier.
 - User-defined MouseClickAction that calls a user-provided function pointer
 * See also
 - [[https://github.com/ocornut/imgui/][Dear ImGui]]
-- ImPlot: Fully featured plotting library: https://github.com/epezent/implot
-- imgui-plot: An improved plot widget aimed at displaying audio data https://github.com/soulthreads/imgui-plot
+- [[https://github.com/epezent/implot][ImPlot]] An advanced 2D Plotting for Dear ImGui
+- [[https://github.com/soulthreads/imgui-plot][imgui-plot]] An improved plot widget aimed at displaying audio data
