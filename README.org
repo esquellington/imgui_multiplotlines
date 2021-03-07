@@ -5,20 +5,16 @@ ImGui::MultiPlotLines() is a nearly drop-in alternative to
 ImGui::PlotLines() that allows drawing multiple channels
 simultaneously and adds some nice extra features on top.
 
+#+caption: Plot+Legend
+#+attr_html: :width 400 px
 [[file:images/mpl_default_with_legend.png]]
-
-#+BEGIN_SRC cpp
-void ImGui::MultiPlotLines();;
-#+END_SRC
 
 * Features
 
 Draw N channels simultaneously in separate Plot and Legend views.
 
-[[file:images/mpl_demo.gif]]
-
 Channels:
-- Have a user-defined name and colour
+- Can have a user-defined name and colour
 - Can be shown/hidden interactively
 - Can be highlighted and selected
 
@@ -31,6 +27,10 @@ Legend View:
 - Shows channel names and status (visible,hovered,selected...)
 - Channel names can be hovered and clicked for custom interaction
 - Can be shown/hidden interactively
+
+#+caption: Demo
+#+attr_html: :width 400 px
+[[file:images/mpl_demo.gif]]
 
 * Installation
 
@@ -51,6 +51,19 @@ Basic usage is similar to ImGui::PlotLines(), and only requires the following ch
 - Providing a get_value() function pointer that accepts and additional channel_idx parameter
 - Providing the number of channels
 
+#+BEGIN_SRC cpp
+void MultiPlotLines( const char* label,
+                     float (*get_value)(void* data, int value_idx, int channel_idx),
+                     void* data,
+                     int num_values,
+                     int num_channels,
+                     // Default params
+                     struct MultiPlotLines_Params* params = nullptr,
+                     float scale_min = FLT_MAX,
+                     float scale_max = FLT_MAX,
+                     ImVec2 graph_size = ImVec2(0, 0) );
+#+END_SRC
+
 Advanced usage requires passing an non-null ImGui::MultiPlotLines_Params
 struct pointer, that can be persistent or non-persistent.
 
@@ -70,13 +83,8 @@ read-write parameters (prefixed by RW_):
 - Highlight Plot channels when hovering over Legend entries (with
   non-persistent params, hovered Plot channels will be highlghted in
   Legend, but not the other way around)
+
 * Details
-** Limitations
-- All plots use the same vertical range
-- All channels are assumed to have the same number of samples (horizontal range)
-- No support for values_offset or overlay_text, available in ImGui::PlotLines()
-User-defined get_value() functions can easily work around these, but
-I've tried to keep the API and default behaviour as simple as possible.
 ** Channel colours
 The default palette is nice enough for dark backgrounds and contains
 16 different colours that are reused if there's more than 16
@@ -87,9 +95,15 @@ Default mouse button actions are setup to select (left) and hide/show
 (right) channels. Users can customize the action executed on
 left,right,middle click on a hovered channel by fiddling with the
 MultiPlotLines_Params struct.
+** Limitations
+- All plots use the same vertical range
+- All channels are assumed to have the same number of samples (horizontal range)
+- No support for values_offset or overlay_text, available in ImGui::PlotLines()
+User-defined get_value() functions can easily work around these, but
+I've tried to keep the API and default behaviour as simple as possible.
 ** Potential improvements
 - Legend could be optionally placed beside/above Plot, instead of below
-- Plot axis labels and ticks markcs
+- Plot axis labels and ticks marks
 - Plot navigation with zoom, pan, selection
 - Alternative Legend view that shows channels as a collapsable
   hierarchy instead of a flat column-based layout
