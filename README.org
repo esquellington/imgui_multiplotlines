@@ -60,13 +60,12 @@ Basic usage is similar to ImGui::PlotLines(), and only requires the following ch
 
 Enabling additional features requires passing an non-null
 ImGui::MultiPlotLines_Params struct pointer, please read the struct
-comments in imgui_multiplotlines.h for specific details.
+comments in imgui_multiplotlines.h for specific details. The user-owned
+Params struct can be non-persistent or persistent across plot calls.
 
-The user-owned Params struct can be either non-persistent, rebuilt
-before each MultiPlotLines() call, or persistent across calls.
-
-Non-persistent params allow fine-tuning the Plot/Legend appearance and
-enable some minimal interaction:
+Non-persistent params are reset before each MultiPlotLines() call, and
+allow fine-tuning the Plot/Legend appearance and enable some minimal
+interaction:
 - Show Legend
 - Enable/Disable per-channel visibility
 - Enable Legend and other UI elements
@@ -78,21 +77,22 @@ enable some minimal interaction:
 
 The minimal setup to enable the Legend feature would be:
 #+BEGIN_SRC cpp
-  MultiPlotLines_Params params;
+  ImGui::MultiPlotLines_Params params;
   params.ShowLegend = true;
-  MultiPlotLines( label, get_value, data, num_values, num_channels, &params );
+  ImGui::MultiPlotLines( label, get_value, data, num_values, num_channels, &params );
 #+END_SRC
 
-Persistent params allow tracking and interactive modification of
-read-write parameters (prefixed by RW_):
+Persistent params allow keeping track of interactive modification of
+read-write values, prefixed by RW_, across multiple calls:
 - Toggle channel visibility
 - Toggle channel selection
 - Hide/Show Legend interactively
 - Keep selection active until explicitly modified
 - Highlight Plot channels when hovering over Legend entries
 
-See ImGui::MultiPlotLines_Demo() for example code showing how to use
-most available features, and ImGui::MultiPlotLines_Params struct comments.
+See imgui_multiplotlines_demo.h/ImGui::MultiPlotLines_Demo() for
+example code showing how to use most available features, and
+ImGui::MultiPlotLines_Params struct comments.
 
 * Details
 ** Channel colours
