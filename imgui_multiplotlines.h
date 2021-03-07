@@ -100,6 +100,12 @@ void MultiPlotLines( const char* label,
     if (window->SkipItems)
         return;
 
+    // Fix/skip bad inputs
+    if( num_values < 2 || num_channels < 1 )
+        return;
+    if( num_channels > MultiPlotLines_Params::cMaxChannels )
+        num_channels = MultiPlotLines_Params::cMaxChannels;
+
     //-- Proces params, use defaults for anything undefined
     MultiPlotLines_Params DEFAULT_PARAMS;
     if( !params )
@@ -117,12 +123,12 @@ void MultiPlotLines( const char* label,
         { 0xFFDDAA77,0xFFFFDD99,0xFF998844,0xFF33CCBB,
           0xFF00AAAA,0xFF88DDEE,0xFF6688EE,0xFFBBAAFF,
           0xFF3377EE,0xFF1133CC,0xFF7733EE,0xFF7766CC,
-          0xFF552288,0xFF9944AA,/*EXTRA*/ 0xFF0000FF,0xFF00FF00,
-          // TODO REPEATED, modify to make LIGHTER versions instead!!
+          0xFF552288,0xFF9944AA,0xFF0000FF,0xFF00FF00,
+          // REPEATED, modify to make LIGHTER versions instead?
           0xFFDDAA77,0xFFFFDD99,0xFF998844,0xFF33CCBB,
           0xFF00AAAA,0xFF88DDEE,0xFF6688EE,0xFFBBAAFF,
           0xFF3377EE,0xFF1133CC,0xFF7733EE,0xFF7766CC,
-          0xFF552288,0xFF9944AA,/*EXTRA*/ 0xFF0000FF,0xFF00FF00 };
+          0xFF552288,0xFF9944AA,0xFF0000FF,0xFF00FF00 };
     auto gcc_fn = params->get_channel_color
                   ? params->get_channel_color
                   : []( const void* data, int channel_idx ){ return s_Palette[channel_idx%MultiPlotLines_Params::cMaxChannels]; };
@@ -230,10 +236,9 @@ void MultiPlotLines( const char* label,
                 }
             }
 
-            // Draw hovered channel/value
+            // User-defined hovered value drawing
             if( hovered_c_idx != -1 )
             {
-                // User-defined hovered value draw
                 if( params->HoveredDrawTooltip )
                     SetTooltip("%s %4.4g", gcn_fn( data, hovered_c_idx ), closest_v);
                 if( params->HoveredDrawValue )
@@ -378,6 +383,7 @@ void MultiPlotLines( const char* label,
             // Text+Border
             ImGui::PushStyleColor( ImGuiCol_Text, channel_color );
             ImGui::PushStyleColor( ImGuiCol_Border, channel_color );
+            // Scope for 6x ImGui::PushStyleColor()
             {
                 // NOTE: We draw a Checkbox but discard its potential
                 // changes, and instead process clicks as MCA below

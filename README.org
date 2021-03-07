@@ -94,7 +94,7 @@ MultiPlotLines_Params struct.
 ** Limitations
 - All plots use the same vertical range
 - All channels are assumed to have the same number of samples (horizontal range)
-- No support for values_offset or overlay_text, available in ImGui::PlotLines()
+- No support for values_offset or overlay_text present in ImGui::PlotLines()
 User-defined get_value() functions can easily work around these, but
 I've tried to keep the API and default behaviour as simple as possible.
 ** Potential improvements
