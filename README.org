@@ -5,9 +5,7 @@ ImGui::MultiPlotLines() is a nearly drop-in alternative to
 ImGui::PlotLines() that allows drawing multiple channels
 simultaneously and adds some nice extra features on top.
 
-#+caption: Plot+Legend
-#+attr_html: :width 400 px
-[[file:images/mpl_default_with_legend.png]]
+#+html: <p align="center"><img src="mpl_default_with_legend.png" width="500" alt="Plot + Legend"/></p>
 
 * Features
 
@@ -28,9 +26,7 @@ Legend View:
 - Channel names can be hovered and clicked for custom interaction
 - Can be shown/hidden interactively
 
-#+caption: Demo
-#+attr_html: :width 400 px
-[[file:images/mpl_demo.gif]]
+#+html: <p align="center"><img src="images/mpl_demo.gif" width="500" alt="MultiPlotLines_Demo()"/></p>
 
 * Installation
 
