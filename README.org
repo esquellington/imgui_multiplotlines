@@ -123,8 +123,8 @@ I've tried to keep the API and default behaviour as simple as possible.
 
 In realtime apps there's many use cases for drawing multiple plots
 simultaneously, and the default functionality in [[https://github.com/ocornut/imgui/][Dear ImGui]] is quite
-limited. There's a some pretty advanced alternatives, but I felt that
-a simple alternative to ~ImGui::PlotLines()~ was still missing.
+limited. There's some pretty advanced options (ex: [[https://github.com/epezent/implot][ImPlot]]), but I felt
+that a simple alternative to ~ImGui::PlotLines()~ was still missing.
 
 The main reason I ended up writing this was plain and simple
 procrastination. I spent roughly 1 week trying to convince myself not
