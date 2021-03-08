@@ -43,7 +43,7 @@ uglier code.
 * Guide
 
 Basic usage is similar to ~ImGui::PlotLines()~ and only requires the following changes:
-- Providing a ~get_value()~ function pointer that accepts and additional channel_idx parameter
+- Providing a ~get_value()~ function pointer that accepts and additional ~channel_idx~ parameter
 - Providing the number of channels
 
 #+BEGIN_SRC cpp
@@ -70,8 +70,8 @@ minimal interaction:
 - Enable Legend
 - Customize per-channel name, color and visibility
 - Change plot line thickness and data filtering factor
-- Query ~RW_HoveredChannelIdx~,~RW_SelectedChannelIdx~ right after
-  call return.
+- Query ~RW_HoveredChannelIdx~ and ~RW_SelectedChannelIdx~ right after
+  the call returns.
 
 The minimal setup to enable the Legend feature would be:
 #+BEGIN_SRC cpp
@@ -81,7 +81,7 @@ The minimal setup to enable the Legend feature would be:
 #+END_SRC
 
 Persistent params allow keeping track of interactive modification of
-read-write values, prefixed by RW_, across multiple calls:
+read-write values (prefixed by RW_) across multiple calls:
 - Hide/Show Legend interactively
 - Toggle channel visibility interactively
 - Toggle channel selection interactively
@@ -102,7 +102,7 @@ customize these at will.
 Default mouse button actions are setup to select (left) and hide/show
 (right) channels. Users can customize the action executed on
 left,right,middle click on a hovered channel by fiddling with the
-MultiPlotLines_Params struct.
+~ImGui::MultiPlotLines_Params~ struct.
 ** Limitations
 - All plots use the same vertical range
 - All channels are assumed to have the same number of samples (horizontal range)
