@@ -72,7 +72,7 @@ struct MultiPlotLines_Params
                              eMCA_SelectChannel,    //Toggle channel selection on click
                              eMCA_ToggleChannel,    //Toggle channel show/hide on click
                              eMCA_ToggleChildren }; //Toggle subhierarchy show/hide on click
-    int  PlotMCA[3]   = { eMCA_SelectChannel, eMCA_ToggleChildren, eMCA_None }; //Left,Right,Middle buttons
+    int  PlotMCA[3]   = { eMCA_SelectChannel, eMCA_None, eMCA_None }; //Left,Right,Middle buttons
     int  LegendMCA[3] = { eMCA_SelectChannel, eMCA_ToggleChannel, eMCA_None };  //Left,Right,Middle buttons
 };
 
