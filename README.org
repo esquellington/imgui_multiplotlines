@@ -3,7 +3,7 @@
 
 ~ImGui::MultiPlotLines()~ is a nearly drop-in alternative to vanilla
 ~ImGui::PlotLines()~ in [[Dear ImGui]] that allows drawing multiple channels
-simultaneously and adds some nice extra features on top.
+simultaneously and adds some nice optional features on top.
 
 #+html: <p align="center"><img src="images/mpl_default_with_legend.png" width="500" title"Plot + Legend"/></p>
 
@@ -60,10 +60,11 @@ Basic usage is similar to ~ImGui::PlotLines()~ and only requires the following c
 #+END_SRC
 
 Enabling additional features requires passing an non-null
-~ImGui::MultiPlotLines_Params~ struct pointer, please read the struct
+~ImGui::MultiPlotLines_Params~ struct pointer, please read the
 comments in [[file:imgui_multiplotlines.h]] for specific details. The
-user-owned struct can be non-persistent or persistent across plot
-calls.
+struct contains both read-only and read-write attributes (prefixed by
+RW_) that can be queried after plotting. Users can allocate the struct
+in persistent or non-persitent memory (eg. the stack).
 
 Non-persistent params are reset before each ~ImGui::MultiPlotLines()~
 call, and allow fine-tuning the Plot/Legend appearance and enable some
@@ -81,8 +82,7 @@ The minimal setup to enable the Legend feature would be:
   ImGui::MultiPlotLines( label, get_value, data, num_values, num_channels, &params );
 #+END_SRC
 
-Persistent params allow interactive modification of read-write values
-(prefixed by RW_) that persist across multiple calls:
+Persistent params allow interactive modification of read-write values that persist across multiple calls:
 - Hide/Show Legend interactively
 - Toggle channel visibility interactively
 - Toggle channel selection interactively
@@ -102,8 +102,8 @@ customize these at will.
 ** MouseClickActions
 Default mouse button actions are setup to select (left) and hide/show
 (right) channels. Users can customize the actions executed on
-left,right,middle click on a hovered channel by fiddling with the
-~ImGui::MultiPlotLines_Params~ struct.
+left,right,middle click on a hovered channel by fiddling with
+~ImGui::MultiPlotLines_Params~.
 ** Limitations
 - All plots use the same vertical range
 - All channels are assumed to have the same number of samples (horizontal range)
@@ -123,7 +123,7 @@ I've tried to keep the API and default behaviour as simple as possible.
 
 In realtime apps there's many use cases for drawing multiple plots
 simultaneously, and the default functionality in [[https://github.com/ocornut/imgui/][Dear ImGui]] is quite
-limited. There's some pretty advanced options (ex: [[https://github.com/epezent/implot][ImPlot]]), but I felt
+limited. There's some pretty advanced options (eg. [[https://github.com/epezent/implot][ImPlot]]), but I felt
 that a simple alternative to ~ImGui::PlotLines()~ was still missing.
 
 There's no real plan for new features, the /Potential improvements/
