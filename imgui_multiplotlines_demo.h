@@ -39,13 +39,14 @@ inline void MultiPlotLines_Demo()
         // ImGui::Checkbox( "UseDefault", &bUseDefaultParams );
         if( !bUseDefaultParams )
         {
-            ImGui::Checkbox( "bFilterUI", &params.bFilterUI );
-            ImGui::Checkbox( "bLegendUI", &params.bLegendUI );
-            ImGui::Checkbox( "HoveredDrawTooltip", &params.HoveredDrawTooltip );
-            ImGui::Checkbox( "HoveredDrawValue", &params.HoveredDrawValue );
+            ImGui::Checkbox("bFilterUI", &params.bFilterUI );
+            ImGui::Checkbox("bLegendUI", &params.bLegendUI );
+            ImGui::Checkbox("HoveredDrawTooltip", &params.HoveredDrawTooltip );
+            ImGui::Checkbox("HoveredDrawValue", &params.HoveredDrawValue );
             ImGui::SliderInt("LegendMaxColumns",&params.LegendMaxColumns,1,10);
-            ImGui::SliderFloat( "HoveredDrawThickness", &params.HoveredDrawThickness, 0.0f, 2.0f );
-            ImGui::SliderFloat( "SelectedDrawThickness", &params.SelectedDrawThickness, 0.0f, 2.0f );
+            ImGui::SliderFloat("PlotDrawThickness", &params.PlotDrawThickness, 1.0f, 3.0f );
+            ImGui::SliderFloat("HoveredDrawThickness", &params.HoveredDrawThickness, 0.0f, 2.0f );
+            ImGui::SliderFloat("SelectedDrawThickness", &params.SelectedDrawThickness, 0.0f, 2.0f );
         }
     }
 

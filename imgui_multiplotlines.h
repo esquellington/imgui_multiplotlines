@@ -47,25 +47,26 @@ struct MultiPlotLines_Params
     const gcn_fn_t* get_channel_name   = nullptr; //if undefined will generate 'C_%d' name
     const gcc_fn_t* get_channel_color  = nullptr; //if undefined will use default Palette[i] color
     const gcp_fn_t* get_channel_parent = nullptr; //if undefined will return -1 (no parent)
-    bool  RW_HideChannel[cMaxChannels] = {};      //All channels visible by default (hide == false)
+    bool  RW_HideChannel[cMaxChannels] = {};      //All channels are visible by default (hide == false)
 
     //-- Hover/Selection
-    int   RW_HoveredChannelIdx  = -1;         //Updated by regular hovering in Plot or Legend
-    int   RW_SelectedChannelIdx = -1;         //Updated by eMCA_SelectChannel
-    ImU32 SelectedColor         = 0xFFFFFFFF; //Selected channel(s) use this color
+    ImU32 SelectedColor         = 0xFFFFFFFF; //Selected channel(s) use this color (white, not present in default palette)
+    int   RW_SelectedChannelIdx = -1;         //Updated by clicking on channel with button mapped to eMCA_SelectChannel
+    int   RW_HoveredChannelIdx  = -1;         //Updated by hovering over channel in Plot or Legend
 
     //-- Plot
-    float HoveredDrawThickness  = 1.0f;  //Hovered plot adds this thickness
+    float PlotDrawThickness     = 1.0f;  //Base thickness
+    float SelectedDrawThickness = 1.0f;  //Additional thickness on selected channel
+    float HoveredDrawThickness  = 1.0f;  //Additional thickness on hovered channel
     bool  HoveredDrawTooltip    = true;  //Draw tooltip for closest hovered channel+value
     bool  HoveredDrawValue      = false; //Draw circle at closest hovered value
-    float SelectedDrawThickness = 1.0f;  //Selected plot adds this thickness
-    bool  bFilterUI             = false; //Enables Filter UI features
-    float RW_FilterAlpha        = 1.0f;  //Low pass filter: f_{i+1} = f_i + alpha*(v_i-f_i), alpha=1.0 means no filtering
+    bool  bFilterUI             = false; //Enables additional Filter UI
+    float RW_FilterAlpha        = 1.0f;  //Low pass filter: f_{i+1} = f_i + alpha*(v_{i+1}-f_i), alpha=1.0 means no filtering
 
     //-- Legend
-    bool bLegendUI        = false; //Enables Legend UI features
     bool RW_ShowLegend    = false; //RW Enable to display interactive legend
-    int  LegendMaxColumns = 4;     //Will use this unless a smaller value results in the same number of rows
+    bool bLegendUI        = false; //Enables additional Legend UI (Hide/Show Legend and All/None channel visibility)
+    int  LegendMaxColumns = 4;     //Number of columns to use, unless a smaller value results in the same number of rows
 
     //-- Mouse interaction
     enum EMouseClickAction { eMCA_None,             //Do nothing

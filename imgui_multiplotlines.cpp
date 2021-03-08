@@ -223,7 +223,7 @@ void MultiPlotLines( const char* label,
                                         ? params->SelectedColor
                                         : gcc_fn(data,it_channel);
             // Additive channel + hovered + selected thickness
-            float channel_thickness = 1.0f;
+            float channel_thickness = params->PlotDrawThickness;
             if( it_channel == params->RW_HoveredChannelIdx )
                 channel_thickness += params->HoveredDrawThickness;
             if( it_channel == params->RW_SelectedChannelIdx )
