@@ -77,7 +77,7 @@ minimal interaction:
 The minimal setup to enable the Legend feature would be:
 #+BEGIN_SRC cpp
   ImGui::MultiPlotLines_Params params;
-  params.ShowLegend = true;
+  params.RW_ShowLegend = true;
   ImGui::MultiPlotLines( label, get_value, data, num_values, num_channels, &params );
 #+END_SRC
 
@@ -125,11 +125,6 @@ In realtime apps there's many use cases for drawing multiple plots
 simultaneously, and the default functionality in [[https://github.com/ocornut/imgui/][Dear ImGui]] is quite
 limited. There's some pretty advanced options (ex: [[https://github.com/epezent/implot][ImPlot]]), but I felt
 that a simple alternative to ~ImGui::PlotLines()~ was still missing.
-
-The main reason I ended up writing this was plain and simple
-procrastination. I spent roughly 1 week trying to convince myself not
-to do it while constantly wanting to, and then roughly another week
-actually doing it.
 
 There's no real plan for new features, the /Potential improvements/
 above may never happen, as the core idea is to keep it simple, but I
