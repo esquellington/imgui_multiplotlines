@@ -24,43 +24,64 @@ void MultiPlotLines( const char* label,
     if (window->SkipItems)
         return;
 
+    ImGuiContext& g = *GImGui;
+    const ImGuiStyle& style = g.Style;
+    const ImGuiID id = window->GetID(label);
+
+    // Adjust sizes
+    if (frame_size.x == 0.0f)
+        frame_size.x = CalcItemWidth();
+    if (frame_size.y == 0.0f)
+        frame_size.y = frame_size.x;
+
+    const ImRect frame_bb(window->DC.CursorPos, window->DC.CursorPos + frame_size);
+    const ImRect inner_bb(frame_bb.Min + style.FramePadding, frame_bb.Max - style.FramePadding);
+    const ImRect total_bb(frame_bb.Min, frame_bb.Max);
+    ItemSize(total_bb, style.FramePadding.y);
+    if (!ItemAdd(total_bb, 0, &frame_bb))
+        return;
+
     // Fix/skip bad inputs
     if( num_values < 2 || num_channels < 1 )
         return;
     if( num_channels > MultiPlotLines_Params::cMaxChannels )
         num_channels = MultiPlotLines_Params::cMaxChannels;
 
-    //-- Proces params, use defaults for anything undefined
+    //---- Proces params, use defaults for anything undefined
     MultiPlotLines_Params DEFAULT_PARAMS;
     if( !params )
         params = &DEFAULT_PARAMS;
-    static const char* s_Names[MultiPlotLines_Params::cMaxChannels] =
-        { "C_00", "C_01", "C_02", "C_03", "C_04", "C_05", "C_06", "C_07",
-          "C_08", "C_09", "C_10", "C_11", "C_12", "C_13", "C_14", "C_15",
-          "C_16", "C_17", "C_18", "C_19", "C_20", "C_21", "C_22", "C_23",
-          "C_24", "C_25", "C_26", "C_27", "C_28", "C_29", "C_30", "C_31" };
+
+    // channel names
+    static const char* s_Names[MultiPlotLines_Params::cMaxChannels] = { "C_00", "C_01", "C_02", "C_03", "C_04", "C_05", "C_06", "C_07",
+                                                                        "C_08", "C_09", "C_10", "C_11", "C_12", "C_13", "C_14", "C_15",
+                                                                        "C_16", "C_17", "C_18", "C_19", "C_20", "C_21", "C_22", "C_23",
+                                                                        "C_24", "C_25", "C_26", "C_27", "C_28", "C_29", "C_30", "C_31" };
     auto gcn_fn = params->get_channel_name
                   ? params->get_channel_name
                   : []( const void* data, int channel_idx ){ return s_Names[channel_idx%MultiPlotLines_Params::cMaxChannels]; };
+    // channel colors
     // Palette from Vibrant,Muted and Light schemes in https://personal.sron.nl/~pault/
-    static const ImU32 s_Palette[MultiPlotLines_Params::cMaxChannels] =
-        { 0xFFDDAA77,0xFFFFDD99,0xFF998844,0xFF33CCBB,
-          0xFF00AAAA,0xFF88DDEE,0xFF6688EE,0xFFBBAAFF,
-          0xFF3377EE,0xFF1133CC,0xFF7733EE,0xFF7766CC,
-          0xFF552288,0xFF9944AA,0xFF0000FF,0xFF00FF00,
-          // REPEATED, modify to make LIGHTER versions instead?
-          0xFFDDAA77,0xFFFFDD99,0xFF998844,0xFF33CCBB,
-          0xFF00AAAA,0xFF88DDEE,0xFF6688EE,0xFFBBAAFF,
-          0xFF3377EE,0xFF1133CC,0xFF7733EE,0xFF7766CC,
-          0xFF552288,0xFF9944AA,0xFF0000FF,0xFF00FF00 };
+    static const ImU32 s_Palette[MultiPlotLines_Params::cMaxChannels] = { 0xFFDDAA77,0xFFFFDD99,0xFF998844,0xFF33CCBB,
+                                                                          0xFF00AAAA,0xFF88DDEE,0xFF6688EE,0xFFBBAAFF,
+                                                                          0xFF3377EE,0xFF1133CC,0xFF7733EE,0xFF7766CC,
+                                                                          0xFF552288,0xFF9944AA,0xFF0000EE,0xFF00EE00,
+                                                                          // Repeated but slightly lighter darker
+                                                                          0xFFEECC99,0xFFFFEEBB,0xFFBBAA66,0xFF55DDDD,
+                                                                          0xFF22CCCC,0xFFAAEEFF,0xFF88AAFF,0xFFDDCCFF,
+                                                                          0xFF5599FF,0xFF3355DD,0xFF9955FF,0xFF9988DD,
+                                                                          0xFF7744AA,0xFFBB66CC,0xFF2222FF,0xFF22FF22};
     auto gcc_fn = params->get_channel_color
                   ? params->get_channel_color
                   : []( const void* data, int channel_idx ){ return s_Palette[channel_idx%MultiPlotLines_Params::cMaxChannels]; };
+
+    // channel parents
     auto gcp_fn = params->get_channel_parent
                   ? params->get_channel_parent
                   : []( const void* data, int channel_idx ){ return -1; };
 
-    // Lambda to execute MCA in Plot/Legend views on channel_idx, that may be -1
+    // Local lambda to execute MCA on channel_idx in Plot/Legend views
+    // channel_idx can be -1 (ex: click outside all channels)
     auto execute_mca_fn = [data,params,num_channels,gcp_fn]( const int* vec_mca, int button_idx, int channel_idx )
         {
             switch( vec_mca[button_idx] )
@@ -88,32 +109,13 @@ void MultiPlotLines( const char* label,
             }
         };
 
-    //-- Start drawing
-    ImGuiContext& g = *GImGui;
-    const ImGuiStyle& style = g.Style;
-    const ImGuiID id = window->GetID(label);
-
-    // Adjust sizes
-    if (frame_size.x == 0.0f)
-        frame_size.x = CalcItemWidth();
-    if (frame_size.y == 0.0f)
-        frame_size.y = frame_size.x;
-
-    const ImRect frame_bb(window->DC.CursorPos, window->DC.CursorPos + frame_size);
-    const ImRect inner_bb(frame_bb.Min + style.FramePadding, frame_bb.Max - style.FramePadding);
-    const ImRect total_bb(frame_bb.Min, frame_bb.Max);
-    ItemSize(total_bb, style.FramePadding.y);
-    if (!ItemAdd(total_bb, 0, &frame_bb))
-        return;
-
-    const bool bHovered = ItemHoverable(frame_bb, id);
-
+    //---- Plots
     // Determine scale from values if not specified
-    if (scale_min == FLT_MAX || scale_max == FLT_MAX)
+    if( scale_min == FLT_MAX || scale_max == FLT_MAX )
     {
         float v_min = FLT_MAX;
         float v_max = -FLT_MAX;
-        for (int i = 0; i < num_values; i++)
+        for( int i = 0; i < num_values; i++ )
         {
             for( int it_channel=0; it_channel<num_channels; it_channel++ )
             {
@@ -132,12 +134,11 @@ void MultiPlotLines( const char* label,
             scale_max = v_max;
     }
 
-    //-- Plots
     RenderFrame( frame_bb.Min, frame_bb.Max,
                  GetColorU32(ImGuiCol_WindowBg), //FrameBg is blue, too intrusive
                  true, style.FrameRounding );
 
-    // Init hovered from params, if within range
+    // Init hovered channel from params, if within range
     int hovered_c_idx = params->RW_HoveredChannelIdx < num_channels
                         ? params->RW_HoveredChannelIdx
                         : -1;
@@ -146,6 +147,7 @@ void MultiPlotLines( const char* label,
         int num_lines = num_values - 1;
 
         // UI/Interaction on hovered channel/slice
+        const bool bHovered = ItemHoverable(frame_bb, id);
         if( bHovered && inner_bb.Contains(g.IO.MousePos) )
         {
             // Reset hovered, forget param value if any
@@ -249,10 +251,8 @@ void MultiPlotLines( const char* label,
         }
     }
 
-    // Centered Plot label, if not ##
-    RenderTextClipped( ImVec2(frame_bb.Min.x, frame_bb.Min.y + style.FramePadding.y),
-                       frame_bb.Max,
-                       label, NULL, NULL, ImVec2(0.5f,0.0f));
+    // Centered Plot label, if not prefixed with ##
+    RenderTextClipped( ImVec2(frame_bb.Min.x, frame_bb.Min.y + style.FramePadding.y), frame_bb.Max, label, NULL, NULL, ImVec2(0.5f,0.0f));
 
     //-- Plot/UI
     if( params->bFilterUI )
@@ -263,7 +263,7 @@ void MultiPlotLines( const char* label,
         ImGui::SliderFloat( "##FilterAlpha", &params->RW_FilterAlpha, 0.1f, 1.0f );
     }
 
-    //-- Legend/UI
+    //---- Legend/UI
     if( params->bLegendUI )
     {
         ImGui::Checkbox( "Legend?", &params->RW_ShowLegend );
