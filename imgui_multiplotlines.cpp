@@ -66,7 +66,7 @@ void MultiPlotLines( const char* label,
                                                                           0xFF00AAAA,0xFF88DDEE,0xFF6688EE,0xFFBBAAFF,
                                                                           0xFF3377EE,0xFF1133CC,0xFF7733EE,0xFF7766CC,
                                                                           0xFF552288,0xFF9944AA,0xFF0000EE,0xFF00EE00,
-                                                                          // Repeated but slightly lighter darker
+                                                                          // Repeated but slightly lighter
                                                                           0xFFEECC99,0xFFFFEEBB,0xFFBBAA66,0xFF55DDDD,
                                                                           0xFF22CCCC,0xFFAAEEFF,0xFF88AAFF,0xFFDDCCFF,
                                                                           0xFF5599FF,0xFF3355DD,0xFF9955FF,0xFF9988DD,
@@ -252,7 +252,8 @@ void MultiPlotLines( const char* label,
     }
 
     // Centered Plot label, if not prefixed with ##
-    RenderTextClipped( ImVec2(frame_bb.Min.x, frame_bb.Min.y + style.FramePadding.y), frame_bb.Max, label, NULL, NULL, ImVec2(0.5f,0.0f));
+    RenderTextClipped( ImVec2(frame_bb.Min.x, frame_bb.Min.y + style.FramePadding.y),
+                       frame_bb.Max, label, NULL, NULL, ImVec2(0.5f,0.0f));
 
     //-- Plot/UI
     if( params->bFilterUI )
@@ -267,7 +268,6 @@ void MultiPlotLines( const char* label,
     if( params->bLegendUI )
     {
         ImGui::Checkbox( "Legend?", &params->RW_ShowLegend );
-        bool bAll(false);
         ImGui::SameLine();
         if( ImGui::Button("All") )
             for( int it_channel=0; it_channel<num_channels; it_channel++ )
