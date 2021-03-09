@@ -60,6 +60,34 @@ void MultiPlotLines( const char* label,
                   ? params->get_channel_parent
                   : []( const void* data, int channel_idx ){ return -1; };
 
+    // Lambda to execute MCA in Plot/Legend views on channel_idx, that may be -1
+    auto execute_mca_fn = [data,params,num_channels,gcp_fn]( const int* vec_mca, int button_idx, int channel_idx )
+        {
+            switch( vec_mca[button_idx] )
+            {
+            case MultiPlotLines_Params::eMCA_SelectChannel: // Toggle selection, unselect if no channel hovereded
+                if( params->RW_SelectedChannelIdx == channel_idx )
+                    params->RW_SelectedChannelIdx = -1;
+                else
+                    params->RW_SelectedChannelIdx = channel_idx;
+                break;
+            case MultiPlotLines_Params::eMCA_ToggleChannel: // Toggle channel visibility
+                if( channel_idx != -1 )
+                    params->RW_HideChannel[channel_idx] = !params->RW_HideChannel[channel_idx];
+                break;
+            case MultiPlotLines_Params::eMCA_ToggleChildren: // Toggle whole subhierarchy visibility
+                if( channel_idx != -1 )
+                    for( int it_c=channel_idx+1; it_c<num_channels; it_c++ )
+                        for( int parent = gcp_fn(data,it_c); parent != -1; parent = gcp_fn(data,parent) )
+                            if( parent == channel_idx )
+                                params->RW_HideChannel[it_c] = !params->RW_HideChannel[it_c];
+                break;
+            case MultiPlotLines_Params::eMCA_None:
+            default:
+                break;
+            }
+        };
+
     //-- Start drawing
     ImGuiContext& g = *GImGui;
     const ImGuiStyle& style = g.Style;
@@ -176,39 +204,8 @@ void MultiPlotLines( const char* label,
 
             // User-defined mouse actions
             for( int it_mb=0; it_mb<3; it_mb++ )
-            {
-                if( g.IO.MouseClicked[it_mb] )
-                {
-                    switch( params->PlotMCA[it_mb] )
-                    {
-                    case MultiPlotLines_Params::eMCA_SelectChannel:
-                        // Toggle selection, unselect if no channel hovereded
-                        if( params->RW_SelectedChannelIdx == hovered_c_idx )
-                            params->RW_SelectedChannelIdx = -1;
-                        else
-                            params->RW_SelectedChannelIdx = hovered_c_idx;
-                        break;
-                    case MultiPlotLines_Params::eMCA_ToggleChannel:
-                        // Toggle channel visibility
-                        if( hovered_c_idx != -1 )
-                            params->RW_HideChannel[hovered_c_idx] = true;
-                        break;
-                    case MultiPlotLines_Params::eMCA_ToggleChildren:
-                        // Toggle whole subhierarchy visibility
-                        if( hovered_c_idx != -1 )
-                            for( int it_c=hovered_c_idx+1; it_c<num_channels; it_c++ )
-                                for( int parent = gcp_fn(data,it_c);
-                                     parent != -1;
-                                     parent = gcp_fn(data,parent) )
-                                    if( parent == hovered_c_idx )
-                                        params->RW_HideChannel[it_c] = !params->RW_HideChannel[it_c];
-                        break;
-                    case MultiPlotLines_Params::eMCA_None:
-                    default:
-                        break;
-                    }
-                }
-            }
+                if( ImGui::IsItemClicked(it_mb) )
+                    execute_mca_fn( params->PlotMCA, it_mb, hovered_c_idx );
         }
         // Update hovered (will remain unmodified, if Plot is not currently hovered)
         params->RW_HoveredChannelIdx = hovered_c_idx;
@@ -324,39 +321,9 @@ void MultiPlotLines( const char* label,
                     window->DrawList->AddRect( ImGui::GetItemRectMin(), ImGui::GetItemRectMax(), channel_color );
 
                 // Run user-defined mouse actions on "fake checkbox"
-                // TODO Duplicated from Plot, try to reuse same code?
                 for( int it_mb=0; it_mb<3; it_mb++ )
-                {
                     if( ImGui::IsItemClicked(it_mb) )
-                    {
-                        switch( params->LegendMCA[it_mb] )
-                        {
-                        case MultiPlotLines_Params::eMCA_SelectChannel:
-                            // Toggle selection, unselect if no channel hovereded
-                            if( params->RW_SelectedChannelIdx == it_channel )
-                                params->RW_SelectedChannelIdx = -1;
-                            else
-                                params->RW_SelectedChannelIdx = it_channel;
-                            break;
-                        case MultiPlotLines_Params::eMCA_ToggleChannel:
-                            // Toggle channel visibility
-                            params->RW_HideChannel[it_channel] = !params->RW_HideChannel[it_channel];
-                            break;
-                        case MultiPlotLines_Params::eMCA_ToggleChildren:
-                            // Toggle whole subhierarchy visibility
-                            for( int it_c=it_channel+1; it_c<num_channels; it_c++ )
-                                for( int parent = gcp_fn(data,it_c);
-                                     parent != -1;
-                                     parent = gcp_fn(data,parent) )
-                                    if( parent == it_channel )
-                                        params->RW_HideChannel[it_c] = !params->RW_HideChannel[it_c];
-                            break;
-                        case MultiPlotLines_Params::eMCA_None:
-                        default:
-                            break;
-                        }
-                    }
-                }
+                        execute_mca_fn( params->LegendMCA, it_mb, it_channel );
             }
             ImGui::PopStyleColor(6);
 
