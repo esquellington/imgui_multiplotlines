@@ -194,7 +194,7 @@ void MultiPlotLines( const char* label,
             if( hovered_c_idx != -1 )
             {
                 if( params->HoveredDrawTooltip )
-                    SetTooltip("%s %4.4g", gcn_fn( data, hovered_c_idx ), closest_v);
+                    SetTooltip("%s(%d) %4.4g", gcn_fn( data, hovered_c_idx ), hovered_v_idx, closest_v);
                 if( params->HoveredDrawValue )
                 {
                     const float inv_scale = (scale_min == scale_max) ? 0.0f : (1.0f / (scale_max - scale_min));
